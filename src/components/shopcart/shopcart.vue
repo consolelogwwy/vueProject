@@ -1,4 +1,6 @@
 <template>
+<div>
+
   <div class="shopcart">
   	 <div class="content" @click="toggleList">
   	 	<div class="content-left">
@@ -28,7 +30,7 @@
   	 <transition name="fold">
   	 <div class="shopcart-list" v-show="listShow">
   	 	<div class="list-header">
-  	 		<h1 class="title">购物车</h1>
+  	 		<h1 class="title1">购物车</h1>
   	 		<span class="empty" @click="emptyGoods">清空</span>
   	 	</div>
   	 	<div class="list-content" ref='listContent'>
@@ -44,10 +46,16 @@
   	 			</li>
   	 		</ul>
   	 	</div>
+      <div class="list-mask">
+        
+      </div>
   	 </div>
+      
   	 </transition>
+    
   </div>
   
+  </div>
 </template>
 <script>
   import BScroll from 'better-scroll';
@@ -83,7 +91,6 @@
   				return;
   			}
   			this.fold = !this.fold;
-  			console.log(this.fold);
   		},
   		emptyGoods () {
   			this.selectFoods.forEach((food) => {
@@ -148,9 +155,11 @@
   	}
   };
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
     @import "../../common/stylus/mixin.styl";
- 
+  .fold-enter-active,.fold-leave-active
+    transition all 0.2s linear
+    transform:translate3D(0,100%,0)
 	.shopcart
 	  position:fixed
 	  left: 0
@@ -255,7 +264,7 @@
 	      padding: 0 18px
 	      background: #f3f5f7
 	      border-bottom: 1px solid rgba(7,17,27,0.1)
-	      .title
+	      .title1
 	        float: left
 	        font-size:12px
 	        color:rgb(7,17,27)
@@ -270,7 +279,6 @@
 	       overflow: hidden
 	       background:#fff
 	       .food
-	         position: relative
 	         padding:12px 0 
 	         box-sizing: border-box
 	         border-1px(rgba(7,17,27,0.1))
@@ -290,8 +298,14 @@
 	            position:absolute
 	            right:37px
 	            bottom:6px
-
-
-
-	       
+  .list-mask
+    position:fixed
+    top:0
+    left:0
+    width:100%
+    height:100%
+    background-filter:blur(10px)
+    z-index:-2
+    background:rgba(7,17,27,0.6)
+   
 </style>

@@ -12,12 +12,12 @@
   	 </div>
   	 <div class="foods-wrapper" ref='foodsWrapper'>
   	 	  <ul>
-          <li v-for="item in goods" class="food-list food-list-hook">
+          <li  v-for="item in goods" class="food-list food-list-hook">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" class="food-item border-1px">
+              <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
                 <div class="icon">
-                  <img width= "57" height= "57" :src="food.icon">
+                  <img width= "57" height= "57" style="border-radius:3px" :src="food.icon">
                 </div>
                 <div class="content">
                    <h2 class="name">{{food.name}}</h2>
@@ -39,12 +39,14 @@
         </ul>
   	 </div>
      <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+     <food :food="selectedFood" ref="food"></food>
   </div>
 </template>
 <script>
 import BScroll from 'better-scroll';
 import shopcart from 'components/shopcart/shopcart';
 import cartcontrol from 'components/cartcontrol/cartcontrol';
+import food from 'components/food/food';
 const ERR_OK = 0;
 export default{
   props: {
@@ -55,6 +57,7 @@ export default{
   data () {
     return {
       goods: [],
+      selectedFood: {},
       listHeight: [],
       scrollY: 0
     };
@@ -125,15 +128,23 @@ export default{
         height += item.clientHeight;
         this.listHeight.push(height);
       }
+    },
+    selectFood (food, event) {
+      if (!event._constructed) {
+        return;
+      }
+      this.selectedFood = food;
+      this.$refs.food.show();
     }
   },
   components: {
     shopcart,
-    cartcontrol
+    cartcontrol,
+    food
   }
 };
 </script>
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/mixin.styl";
 
   .goods
@@ -227,10 +238,6 @@ export default{
          .price
            font-weight: 700
            line-height: 24px
-         .cartcontrol-wrapper
-           position:absolute
-           right:0
-           bottom: 12px
            .now
              margin-right:18px
              font-size:14px
@@ -239,10 +246,10 @@ export default{
              text-decoration: line-through
              font-size: 10px
              color: rgb(147,153,159)
-
-
-
-
-
-
+         .cartcontrol-wrapper
+           position:absolute
+           right:0
+           bottom: 12px
+           
 </style>
+
